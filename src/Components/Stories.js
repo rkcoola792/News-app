@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useGlobalContext } from "../Context/context";
 const Stories = () => {
-  const { hits, nbPages,isLoading } = useGlobalContext();
+  const { hits, nbPages, isLoading ,removePost} = useGlobalContext();
 
   if (isLoading) {
     return <h2>Loading...</h2>;
@@ -9,15 +9,31 @@ const Stories = () => {
 
   return (
     <>
-      <h1>Rk Tech News Post</h1>
-      {hits.map((currPost) => {
-        return (
-          <>
-            <h2>{currPost.title}</h2>
-            {/* <h4> {currPost.author}</h4> */}
-          </>
-        );
-      })}
+      
+      <div className="stories-div">
+        {hits.map((currPost) => {
+          const { title, author, objectID, url, num_comments } = currPost;
+          return (
+            <>
+              <div className="card" ke={objectID}>
+                <h2>{title}</h2>
+                <p>
+                  By <span>{author} </span>| <span> {num_comments}</span>{" "}
+                  comments
+                </p>
+
+                <div className="card-button">
+                  <a href={url} target="_blank">
+                    Read More
+                  </a>
+
+                  <a href="#" onClick={()=>removePost(objectID)}>Remove</a>
+                </div>
+              </div>
+            </>
+          );
+        })}
+      </div>
     </>
   );
 };

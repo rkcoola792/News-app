@@ -10,7 +10,7 @@ let API = "https://hn.algolia.com/api/v1/search?query=html";
 
 // defining the iitial sate of useReducer
 export const initialState = {
-  query: "HTML",
+  query: "CSS",
   nbPages: 0,
   page: 0,
   hits: [],
@@ -25,12 +25,10 @@ export const AppProvider = ({ children }) => {
   // const [state,setState]=useState(initialValue)
   const [state, dispatch] = useReducer(reducer, initialState);
 
-  //   to update the loading
-  //
-
   // api fetch function
   const fetchApiData = async (url) => {
     try {
+      //   to update the loading
       dispatch({ type: "SET_LOADING" });
       const res = await fetch(url);
       const data = await res.json();
@@ -47,12 +45,26 @@ export const AppProvider = ({ children }) => {
     } catch (error) {}
   };
 
+  // to remove thee post
+  const removePost = (postID) => {
+    dispatch({ type: "REMOVE_POST", payload: postID });
+  };
+
+  // to search post
+  const searchPost = (searchQuery) => {
+    dispatch({ type: "SEARCH_QUERY", payload: searchQuery });
+  };
+
+  // fethcing the data from the API
   useEffect(() => {
     fetchApiData(`${API}query=${state.query}&page=${state.page}`);
-  }, []);
+  }, [state.query]);
 
   return (
-    <AppContext.Provider value={{ ...state }}> {children}</AppContext.Provider>
+    <AppContext.Provider value={{ ...state, removePost, searchPost }}>
+      {" "}
+      {children}
+    </AppContext.Provider>
   );
 };
 

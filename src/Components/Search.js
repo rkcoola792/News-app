@@ -1,11 +1,25 @@
-import React from 'react'
+import React from "react";
+import { useGlobalContext } from "../Context/context";
 
 const Search = () => {
+  const { query, searchPost } = useGlobalContext();
+  console.log("Query", query);
   return (
-    <div>
-      Search
-    </div>
-  )
-}
+    <>
+      <h1>Rk Tech WEB</h1>
 
-export default Search
+      <form action="" onSubmit={(e) => e.preventDefault}>
+        <div>
+          <input
+            type="text"
+            placeholder="Search here"
+            value={query}
+            onChange={(e) => searchPost(e.target.value)}
+          />
+        </div>
+      </form>
+    </>
+  );
+};
+
+export default Search;
